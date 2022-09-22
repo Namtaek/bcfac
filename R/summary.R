@@ -1,9 +1,9 @@
-#' Summary for `bartcs` object
+#' Summary for `bcfac` object
 #'
 #' @description
-#' Provide summary for `bartcs` object.
+#' Provide summary for `bcfac` object.
 #'
-#' @param object A `bartcs` object.
+#' @param object A `bcfac` object.
 #' @param ... Additional arguments. Not yet supported.
 #'
 #' @details

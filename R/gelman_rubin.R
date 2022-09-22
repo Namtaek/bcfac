@@ -1,8 +1,8 @@
 #' Gelman-Rubin diagnostic for \code{bartcs} objects.
 #'
-#' `gelman_rubin()` computes Gelman-Rubin diagnostic for `bartcs` objects.
+#' `gelman_rubin()` computes Gelman-Rubin diagnostic for `bcfac` objects.
 #'
-#' @param x A `bartcs` object.
+#' @param x A `bcfac` object.
 #'
 #' @return Gelman-Rubin diagnostic value.
 #' @examples

@@ -1,10 +1,10 @@
-#' Draw plot for `bartcs` object
+#' Draw plot for `bcfac` object
 #'
 #' @description
 #' Two options are available:
 #'   posterior inclusion probability (pip) plot and trace plot.
 #'
-#' @param x A `bartcs` object.
+#' @param x A `bcfac` object.
 #' @param method "`pip`" for posterior inclusion probability plot
 #'   or "`trace`" for trace plot.
 #' @param parameter Target of parameter for traceplot.
@@ -17,7 +17,7 @@
 #' `sbart()` or `mbart()` also counts
 #' which variables are included in the model and
 #' compute pip for each variable.
-#' For `bartcs` object `x`,
+#' For `bcfac` object `x`,
 #' this is stored in `x$var_count` and `x$var_prob` respectively.
 #' `plot(method = "pip")` uses this information and
 #' draws plot using `ggcharts::bar_chart()`.
