@@ -3,11 +3,11 @@
 devtools::install()
 
 # load package and data
-library(bartcs)
+library(bcfac)
 data("lalonde", package = "Matching")
 
 ?sbart
-?plot.bartcs
+?plot.bcfac
 count_omp_thread()
 
 Y   <- lalonde$re78

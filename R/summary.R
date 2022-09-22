@@ -24,7 +24,7 @@
 #'   both aggregated outcome and individual outcomes from each chain.}
 #'
 #' @examples
-#' data(ihdp, package = "bartcs")
+#' data(ihdp, package = "bcfac")
 #' x <- mbart(
 #'   Y               = ihdp$y_factual,
 #'   trt             = ihdp$treatment,
@@ -38,7 +38,7 @@
 #' summary(x)
 #'
 #' @exportS3Method
-summary.bartcs <- function(object, ...) {
+summary.bcfac <- function(object, ...) {
   estimand  <- c("ATE", "Y1", "Y0")
   num_chain <- object$params$num_chain
 
@@ -100,15 +100,15 @@ summary.bartcs <- function(object, ...) {
   }
   res$outcome <- outcome
 
-  class(res) <- "bartcs_summary"
+  class(res) <- "bcfac_summary"
   res
 }
 
 #' @exportS3Method
-print.bartcs_summary <- function(x, ...) {
+print.bcfac_summary <- function(x, ...) {
   width = 6
   cat(
-    "`bartcs` fit by `", x$model, "()`", "\n",
+    "`bcfac` fit by `", x$model, "()`", "\n",
     "\n", sep = ""
   )
   cat(

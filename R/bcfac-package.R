@@ -5,7 +5,7 @@
 ## usethis namespace: end
 NULL
 
-#' bartcs: Bayesian Additive Regression Trees for Confounder Selection
+#' bcfac: Bayesian Additive Regression Trees for Confounder Selection
 #'
 #' Fit Bayesian Regression Additive Trees (BART) models to
 #' select relevant confounders among a large set of potential confounders

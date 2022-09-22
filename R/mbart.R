@@ -171,7 +171,7 @@ mbart <- function(
 
   cat("\n")
 
-  # return as bartcs object
+  # return as bcfac object
   structure(
     list(
       ATE = ATE, Y1 = Y1, Y0 = Y0,
@@ -195,7 +195,7 @@ mbart <- function(
         q               = q
       )
     ),
-    class = "bartcs"
+    class = "bcfac"
   )
 }
 

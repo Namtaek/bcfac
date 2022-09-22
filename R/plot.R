@@ -33,7 +33,7 @@
 #' A `ggplot` object of either pip plot or trace plot.
 #'
 #' @examples
-#' data(ihdp, package = "bartcs")
+#' data(ihdp, package = "bcfac")
 #' x <- mbart(
 #'   Y               = ihdp$y_factual,
 #'   trt             = ihdp$treatment,
@@ -57,13 +57,13 @@
 #' plot(x, method = "trace", "dir_alpha")
 #'
 #' @exportS3Method
-plot.bartcs <- function(x, method = NULL, parameter = NULL, ...) {
+plot.bcfac <- function(x, method = NULL, parameter = NULL, ...) {
   if (is.null(method))
     stop(
       "You must choose method.\n",
       "  * For pip plot, set method = \"pip\".\n",
       "  * For trace plot, set method = \"trace\".\n",
-      "\nTry `?plot.bartcs` for more detail."
+      "\nTry `?plot.bcfac` for more detail."
     )
 
   if (method == "pip") {

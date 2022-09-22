@@ -116,7 +116,7 @@
 #' \doi{10.48550/arXiv.2203.11798}
 #'
 #' @return
-#' A `bartcs` object. A `bartcs` object is a list with following components.
+#' A `bcfac` object. A `bcfac` object is a list with following components.
 #'
 #' \item{ATE}{Aggregated posterior samples of average treatment effect \eqn{(Y(1) - Y(0))}.}
 #' \item{Y1}{Aggregated posterior samples of potential outcome \eqn{Y(1)}.}
@@ -139,7 +139,7 @@
 #' \item{params}{Parameters used in the model.}
 #'
 #' @examples
-#' data(ihdp, package = "bartcs")
+#' data(ihdp, package = "bcfac")
 #' mbart(
 #'   Y               = ihdp$y_factual,
 #'   trt             = ihdp$treatment,

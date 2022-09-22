@@ -6,7 +6,7 @@
 #'
 #' @return Gelman-Rubin diagnostic value.
 #' @examples
-#' data(ihdp, package = "bartcs")
+#' data(ihdp, package = "bcfac")
 #' x <- mbart(
 #'   Y               = ihdp$y_factual,
 #'   trt             = ihdp$treatment,
