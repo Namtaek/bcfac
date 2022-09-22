@@ -9,19 +9,21 @@ void BartTree::drawLeafValue(const int t, const bool half_cauchy)
 {
     const int NUM_OBS = X.nrow();
     const double PI = 3.14159265358979323846;
+    double SCALE_RAND;
 
     if (root_nodes_[t]->isTerminal())
     {
         const double LOG_VAR    = log(sigma_mu) + log(sigma2_) - log(sigma2_ + NUM_OBS * sigma_mu);
         const double MEAN       = exp(LOG_VAR) * sum(residual_) / sigma2_;
         const double SCALE_MEAN = exp(0.5 * (LOG_VAR + log(PI) + log(2)));
+        
      if (half_cauchy == true) {
         // tree with single node
-            const double SCALE_RAND = fabs(R::rcauchy(0, SCALE_MEAN));
+            SCALE_RAND = fabs(R::rcauchy(0, SCALE_MEAN));
         }
         else 
         {
-            const double SCALE_RAND = fabs(R::rnorm(0, SCALE_MEAN));
+            SCALE_RAND = fabs(R::rnorm(0, SCALE_MEAN));
         }
         const double MU      = R::rnorm(MEAN, SCALE_RAND);
         root_nodes_[t]->setLeafValue(MU);
@@ -77,11 +79,11 @@ void BartTree::drawLeafValue(const int t, const bool half_cauchy)
             const double SCALE_MEAN = exp(0.5 * (LOG_VAR + log(PI) + log(2)));
 
             if (half_cauchy == true) {
-                const double SCALE_RAND = fabs(R::rcauchy(0, SCALE_MEAN));
+                SCALE_RAND = fabs(R::rcauchy(0, SCALE_MEAN));
             }
             else 
             {
-                const double SCALE_RAND = fabs(R::rnorm(0, SCALE_MEAN));
+                SCALE_RAND = fabs(R::rnorm(0, SCALE_MEAN));
             }
             const double MU = R::rnorm(MEAN, SCALE_RAND);
             terminal_nodes[j]->setLeafValue(MU);
