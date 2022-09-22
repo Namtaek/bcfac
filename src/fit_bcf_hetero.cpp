@@ -50,8 +50,8 @@ void fit_mbart(
     const int NUM_VAR = X.ncol();
     const int TRT_IDX = X.ncol();
 
-    NumericVector PS(n);
-    NumericVector PS_vec(n);
+    NumericVector PS(NUM_OBS);
+    NumericVector PS_vec(NUM_OBS);
     NumericMatrix X1(NUM_OBS, NUM_VAR + 1);
 
     //play
@@ -76,8 +76,8 @@ void fit_mbart(
         }
     }
 
-    NumericMatrix temp_seq(n, 1);
-    temp_seq(_, 0) = seq_len(n);
+    NumericMatrix temp_seq(NUM_OBS, 1);
+    temp_seq(_, 0) = seq_len(NUM_OBS);
     for (int i = 0; i < NUM_OBS; i++) {
         float j = i;
         temp_seq(i, 0) = j / (NUM_OBS + 1);
@@ -169,18 +169,18 @@ void fit_mbart(
         exposure.updateLatentVariable(latent_variable, is_binary_trt);
         
         // update tree
-        exposure.step(latent_variable, is_binary_trt, half_cauchy = false);
+        exposure.step(latent_variable, is_binary_trt, false);
 
         PS_vec = exposure.getFittedValues();
-        for (int l = 0; l < NUM_OBS, l++) {
+        for (int l = 0; l < NUM_OBS; l++) {
             PS[l] = R::pnorm(PS_vec[l], 0 ,1, true, false);
         }
         X1 = cbind(X, PS)
 
 
-         outcome.step(Y, is_binary_trt, half_cauchy = true);
+         outcome.step(Y, is_binary_trt, true);
         //남택수정
-        modifier.step(Y, is_binary_trt, half_cauchy = false);
+        modifier.step(Y, is_binary_trt, false);
         
         // update sigma
         if (!is_binary_trt)
