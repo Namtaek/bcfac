@@ -1,4 +1,4 @@
-#' Gelman-Rubin diagnostic for \code{bartcs} objects.
+#' Gelman-Rubin diagnostic for \code{bcfac} objects.
 #'
 #' `gelman_rubin()` computes Gelman-Rubin diagnostic for `bcfac` objects.
 #'
@@ -26,8 +26,8 @@ gelman_rubin <- function(x) {
 }
 
 #' @exportS3Method
-gelman_rubin.bartcs <- function(x) {
-  # stop if x or y is not bartcs object
+gelman_rubin.bcfac <- function(x) {
+  # stop if x or y is not bcfac object
   num_chain <- x$params$num_chain
   if (num_chain == 1) {
     message("`num_chain` must be greater than 1 for Gelman-Rubin diagnostics.")
