@@ -96,7 +96,7 @@ Parallelization is recommended for very high \code{n} only.}
 If \code{FALSE}, message will be suppressed.}
 }
 \value{
-A \code{bartcs} object. A \code{bartcs} object is a list with following components.
+A \code{bcfac} object. A \code{bcfac} object is a list with following components.
 
 \item{ATE}{Aggregated posterior samples of average treatment effect \eqn{(Y(1) - Y(0))}.}
 \item{Y1}{Aggregated posterior samples of potential outcome \eqn{Y(1)}.}
@@ -149,7 +149,7 @@ one exposure model and one outcome model for the entire sample.
 All inferences are made with outcome model(s).
 }
 \examples{
-data(ihdp, package = "bartcs")
+data(ihdp, package = "bcfac")
 mbart(
   Y               = ihdp$y_factual,
   trt             = ihdp$treatment,

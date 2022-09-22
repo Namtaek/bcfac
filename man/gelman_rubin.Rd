@@ -2,21 +2,21 @@
 % Please edit documentation in R/gelman_rubin.R
 \name{gelman_rubin}
 \alias{gelman_rubin}
-\title{Gelman-Rubin diagnostic for \code{bartcs} objects.}
+\title{Gelman-Rubin diagnostic for \code{bcfac} objects.}
 \usage{
 gelman_rubin(x)
 }
 \arguments{
-\item{x}{A \code{bartcs} object.}
+\item{x}{A \code{bcfac} object.}
 }
 \value{
 Gelman-Rubin diagnostic value.
 }
 \description{
-\code{gelman_rubin()} computes Gelman-Rubin diagnostic for \code{bartcs} objects.
+\code{gelman_rubin()} computes Gelman-Rubin diagnostic for \code{bcfac} objects.
 }
 \examples{
-data(ihdp, package = "bartcs")
+data(ihdp, package = "bcfac")
 x <- mbart(
   Y               = ihdp$y_factual,
   trt             = ihdp$treatment,
