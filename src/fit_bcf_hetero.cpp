@@ -33,10 +33,6 @@ void fit_mbart(
         const double         alpha,
         const double         beta,
         const double         nu,
-        const double         alpha2, //
-        const double         beta2, //
-        const double         nu2, //
-        const int            num_tree_mod, //
         const double         lambda_exp,
         const double         lambda_out,
         const double         lambda_mod, //
@@ -49,6 +45,13 @@ void fit_mbart(
     const int NUM_OBS = X.nrow();
     const int NUM_VAR = X.ncol();
     const int TRT_IDX = X.ncol();
+
+    const double alpha2 = 0.25;
+    const double beta2  = 3;
+    const double nu2    = 10;
+    const int num_tree_mod = 25;
+
+
 
     NumericVector PS(NUM_OBS);
     NumericVector PS_vec(NUM_OBS);
