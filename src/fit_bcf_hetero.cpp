@@ -175,7 +175,7 @@ void fit_mbart(
         for (int l = 0; l < NUM_OBS; l++) {
             PS[l] = R::pnorm(PS_vec[l], 0 ,1, true, false);
         }
-        X1 = cbind(X, PS)
+        X1 = cbind(X, PS);
 
 
          outcome.step(Y, is_binary_trt, true);
