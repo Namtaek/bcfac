@@ -140,9 +140,9 @@ void fit_sbart(
         exposure.updateLatentVariable(latent_variable, is_binary_trt);
 
         // update tree
-        exposure.step(latent_variable, is_binary_trt);
-        outcome1.step(Y_treated,       is_binary_trt);
-        outcome0.step(Y_control,       is_binary_trt);
+        exposure.step(latent_variable, is_binary_trt, false);
+        outcome1.step(Y_treated,       is_binary_trt, false);
+        outcome0.step(Y_control,       is_binary_trt, false);
 
         // update sigma
         outcome1.updateSigma2(rinvgamma, Y_treated, nu, lambda_out1);

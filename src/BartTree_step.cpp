@@ -41,3 +41,4 @@ void BartTree::step(
         drawLeafValue(t, half_cauchy);
     }
 }
+

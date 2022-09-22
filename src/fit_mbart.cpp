@@ -65,8 +65,6 @@ void fit_mbart(
         }
     }
 
-    vector<NumericVector> Xcut (NUM_VAR + 1);
-
 
     
     NumericVector latent_variable;
@@ -133,8 +131,8 @@ void fit_mbart(
         exposure.updateLatentVariable(latent_variable, is_binary_trt);
         
         // update tree
-        exposure.step(latent_variable, is_binary_trt);
-         outcome.step(Y,               is_binary_trt);
+        exposure.step(latent_variable, is_binary_trt, false);
+         outcome.step(Y,               is_binary_trt, false);
         
         // update sigma
         if (!is_binary_trt)
