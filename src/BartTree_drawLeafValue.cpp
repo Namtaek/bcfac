@@ -8,7 +8,7 @@ using namespace std;
 void BartTree::drawLeafValue(const int t, const bool half_cauchy)
 {
     const int NUM_OBS = X.nrow();
-    const double PI = 3.14159265358979323846
+    const double PI = 3.14159265358979323846;
 
     if (root_nodes_[t]->isTerminal())
     {
