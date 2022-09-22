@@ -1,4 +1,4 @@
-Package: bartcs
+Package: bcfac
 Title: Bayesian Additive Regression Trees for Confounder Selection
 Version: 0.1.2
 Authors@R: 
@@ -8,8 +8,8 @@ Description: Fit Bayesian Regression Additive Trees (BART) models to
     and to estimate average treatment effect. For more information, see
     Kim et al. (2022) <doi:10.48550/arXiv.2203.11798>.
 License: GPL (>= 3)
-URL: https://github.com/yooyh/bartcs
-BugReports: https://github.com/yooyh/bartcs/issues
+URL: https://github.com/Namtaek/bcfac
+BugReports: https://github.com/Namtaek/bcfac/issues
 Depends: 
     R (>= 2.10)
 Imports: 
