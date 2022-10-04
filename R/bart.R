@@ -47,6 +47,30 @@
 #'   verbose         = TRUE
 #' )
 #'
+#' bcf(
+#'   Y, trt, X,
+#'   trt_treated     = 1,
+#'   trt_control     = 0,
+#'   num_tree        = 100,
+#'   num_chain       = 4,
+#'   num_burn_in     = 100,
+#'   num_thin        = 10,
+#'   num_post_sample = 200,
+#'   step_prob       = c(0.28, 0.28, 0.44),
+#'   alpha           = 0.95,
+#'   beta            = 2,
+#'   nu              = 3,
+#'   alpha2          = 0.25,
+#'   beta2           = 3,
+#'   nu2             = 10,
+#'   num_tree_mod    = 25,
+#'   q               = 0.95,
+#'   dir_alpha       = 5,
+#'   boot_size       = NULL,
+#'   parallel        = NULL,
+#'   verbose         = TRUE
+#' )
+#'
 #' @param Y Outcome variable.
 #' @param trt Treatment variable.
 #' @param X Potential confounders.
@@ -70,6 +94,9 @@
 #'   probability of `alpha * (1 + d)^(-beta)`.
 #' @param nu,q Values to calibrate hyperparameter of sigma prior.
 #'   Default setting is `(nu, q) = (3, 0.95)` from Chipman et al. (2010).
+#' @param alpha2,beta2 Hyperparameters for modifier tree regularization prior.
+#' @param nu2 Values to calibrate hyperparameter of sigma prior.
+#' @param num_tree_mod Number of trees in modifer part.
 #' @param dir_alpha Hyperparameter of Dirichlet prior for selection probabilities.
 #' @param boot_size Number of bootstrap sample size.
 #'   Bootstrap samples will be used to compute potential outcomes \eqn{Y(1)} and \eqn{Y(0)}.

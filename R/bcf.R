@@ -14,10 +14,10 @@ bcf <- function(
   alpha           = 0.95,
   beta            = 2,
   nu              = 3,
-  #alpha2          = 0.25,
-  #beta2           = 3,
-  #nu2             = 10,
-  #num_tree_mod    = 25,
+  alpha2          = 0.25,
+  beta2           = 3,
+  nu2             = 10,
+  num_tree_mod    = 25,
   q               = 0.95,
   dir_alpha       = 5,
   boot_size       = NULL,
@@ -31,7 +31,7 @@ bcf <- function(
     num_tree, num_chain,
     num_burn_in, num_thin, num_post_sample,
     step_prob, alpha, beta, nu,
-    #alpha2, beta2, nu2, num_tree_mod,
+    alpha2, beta2, nu2, num_tree_mod,
     q, dir_alpha, verbose
   )
 
@@ -138,7 +138,7 @@ bcf <- function(
       chain_idx, num_chain,
       num_chain_iter, num_burn_in, num_thin, num_post_sample,
       num_tree, step_prob, alpha, beta, nu,
-      #alpha2, beta2, nu2, num_tree_mod,
+      alpha2, beta2, nu2, num_tree_mod,
       lambda_exp, lambda_out, lambda_mod,
       boot_size, is_binary_trt, parallel, verbose
     )
@@ -199,10 +199,10 @@ bcf <- function(
         alpha           = alpha,
         beta            = beta,
         nu              = nu,
-        #alpha2          = alpha2,
-        #beta2           = beta2,
-        #nu2             = nu2,
-        #num_tree_mod    = num_tree_mod,
+        alpha2          = alpha2,
+        beta2           = beta2,
+        nu2             = nu2,
+        num_tree_mod    = num_tree_mod,
         q               = q
       )
     ),

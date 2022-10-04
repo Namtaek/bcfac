@@ -4,6 +4,7 @@
 \alias{bart}
 \alias{mbart}
 \alias{sbart}
+\alias{bcf}
 \title{Fit BART models to select confounders and estimate treatment effect}
 \usage{
 sbart(
@@ -39,6 +40,30 @@ mbart(
   alpha           = 0.95,
   beta            = 2,
   nu              = 3,
+  q               = 0.95,
+  dir_alpha       = 5,
+  boot_size       = NULL,
+  parallel        = NULL,
+  verbose         = TRUE
+)
+
+bcf(
+  Y, trt, X,
+  trt_treated     = 1,
+  trt_control     = 0,
+  num_tree        = 100,
+  num_chain       = 4,
+  num_burn_in     = 100,
+  num_thin        = 10,
+  num_post_sample = 200,
+  step_prob       = c(0.28, 0.28, 0.44),
+  alpha           = 0.95,
+  beta            = 2,
+  nu              = 3,
+  alpha2          = 0.25,
+  beta2           = 3,
+  nu2             = 10,
+  num_tree_mod    = 25,
   q               = 0.95,
   dir_alpha       = 5,
   boot_size       = NULL,
