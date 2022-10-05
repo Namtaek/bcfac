@@ -199,10 +199,10 @@ bcf <- function(
         alpha           = alpha,
         beta            = beta,
         nu              = nu,
-        alpha2          = alpha2,
-        beta2           = beta2,
-        nu2             = nu2,
-        num_tree_mod    = num_tree_mod,
+        #alpha2          = alpha2,
+        #beta2           = beta2,
+        #nu2             = nu2,
+        #num_tree_mod    = num_tree_mod,
         q               = q
       )
     ),

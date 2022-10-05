@@ -107,7 +107,7 @@
 #'   If `FALSE`, message will be suppressed.
 #'
 #' @details
-#' `sbart()` and `mbart()` fit an exposure model and outcome model(s)
+#' `sbart()` and `mbart()` and `bcf()` fit an exposure model and outcome model(s)
 #' for estimating treatment effect with adjustment of confounders
 #' in the presence of a large set of potential confounders (Kim et al. 2022).
 #'
@@ -125,6 +125,10 @@
 #'       one exposure model and two separate outcome models for \eqn{A = 0, 1}.
 #'
 #'   \item `mbart()` specifies a single **"marginal"** outcome models.
+#'     Thus, it fits two models:
+#'       one exposure model and one outcome model for the entire sample.
+#'
+#'   \item `bcf()` specifies a single **"marginal"** outcome models.
 #'     Thus, it fits two models:
 #'       one exposure model and one outcome model for the entire sample.
 #' }
@@ -161,7 +165,7 @@
 #'     \item `sigma2_out` Posterior sample of `sigma2` in the outcome model.
 #'     \item `dir_alpha`  Posterior sample of `dir_alpha.`
 #'   }
-#' \item{model}{`sbart` or `mbart`.}
+#' \item{model}{`sbart` or `mbart` or `bcf`.}
 #' \item{label}{Column names of `X`.}
 #' \item{params}{Parameters used in the model.}
 #'
@@ -185,6 +189,17 @@
 #'   num_chain       = 2,
 #'   num_post_sample = 20,
 #'   num_burn_in     = 10,
+#'   verbose         = FALSE
+#' )
+#' bcf(
+#'   Y               = ihdp$y_factual,
+#'   trt             = ihdp$treatment,
+#'   X               = ihdp[, 6:30],
+#'   num_tree        = 10,
+#'   num_chain       = 2,
+#'   num_post_sample = 20,
+#'   num_burn_in     = 10,
+#'   num_tree_mod    = 5
 #'   verbose         = FALSE
 #' )
 NULL

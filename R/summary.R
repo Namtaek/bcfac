@@ -14,7 +14,7 @@
 #' @return
 #' Provide list with following components.
 #'
-#' \item{model}{`sbart` or `mbart`.}
+#' \item{model}{`sbart` or `mbart` or `bcf`.}
 #' \item{trt_value}{Treatment values for each treatment group:
 #'   `trt_treated` for treatment group and `trt_control` for control group.}
 #' \item{tree_params}{Parameters used for tree structure.}
