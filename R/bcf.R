@@ -26,7 +26,7 @@ bcf <- function(
 ) {
 
   # ---- check input ----
-  check_input(
+  check_input2(
     Y, trt, X, trt_treated, trt_control,
     num_tree, num_chain,
     num_burn_in, num_thin, num_post_sample,
