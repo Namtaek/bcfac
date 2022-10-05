@@ -14,7 +14,7 @@
 \value{
 Provide list with following components.
 
-\item{model}{\code{sbart} or \code{mbart}.}
+\item{model}{\code{sbart} or \code{mbart} or \code{bcf}.}
 \item{trt_value}{Treatment values for each treatment group:
 \code{trt_treated} for treatment group and \code{trt_control} for control group.}
 \item{tree_params}{Parameters used for tree structure.}

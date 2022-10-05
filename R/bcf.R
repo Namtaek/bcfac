@@ -26,14 +26,15 @@ bcf <- function(
 ) {
 
   # ---- check input ----
-  check_input2(
-    Y, trt, X, trt_treated, trt_control,
-    num_tree, num_chain,
-    num_burn_in, num_thin, num_post_sample,
-    step_prob, alpha, beta, nu,
-    alpha2, beta2, nu2, num_tree_mod,
-    q, dir_alpha, verbose
-  )
+  #check_input2(
+  #  Y, trt, X, trt_treated, trt_control,
+  #  num_tree, num_chain,
+  #  num_burn_in, num_thin, num_post_sample,
+  #  step_prob, alpha, beta, nu,
+  #  alpha2, beta2, nu2, num_tree_mod,
+  #  q, dir_alpha, verbose
+  #)
+
 
 
   # ---- data preprocessing ----

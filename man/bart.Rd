@@ -108,6 +108,10 @@ probability of \code{alpha * (1 + d)^(-beta)}.}
 \item{nu, q}{Values to calibrate hyperparameter of sigma prior.
 Default setting is \verb{(nu, q) = (3, 0.95)} from Chipman et al. (2010).}
 
+\item{alpha2,beta2} {Hyperparameters for modifier tree regularization prior.}
+\item{nu2} {Values to calibrate hyperparameter of sigma prior.}
+\item{num_tree_mod} {Number of trees in modifer part.}
+
 \item{dir_alpha}{Hyperparameter of Dirichlet prior for selection probabilities.}
 
 \item{boot_size}{Number of bootstrap sample size.
