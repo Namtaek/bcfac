@@ -26,14 +26,14 @@ bcf <- function(
 ) {
 
   # ---- check input ----
-  #check_input2(
-  #  Y, trt, X, trt_treated, trt_control,
-  #  num_tree, num_chain,
-  #  num_burn_in, num_thin, num_post_sample,
-  #  step_prob, alpha, beta, nu,
-  #  alpha2, beta2, nu2, num_tree_mod,
-  #  q, dir_alpha, verbose
-  #)
+  check_input2(
+    Y, trt, X, trt_treated, trt_control,
+    num_tree, num_chain,
+    num_burn_in, num_thin, num_post_sample,
+    step_prob, alpha, beta, nu,
+    alpha2, beta2, nu2, num_tree_mod,
+    q, dir_alpha, verbose
+  )
 
 
 
@@ -69,8 +69,8 @@ bcf <- function(
     parallel <- ifelse(n < 15e4, TRUE, FALSE)
 
   # assign variable names if there are no name
-  #if (is.null(colnames(X)))
-  #  colnames(X) <- paste0("X", seq_len(p))
+  if (is.null(colnames(X)))
+    colnames(X) <- paste0("X", seq_len(p))
 
 
   # ---- bcf specific preprocessing step ----
@@ -83,6 +83,10 @@ bcf <- function(
   # ---- calculate lambda before MCMC iterations ----
   sigma2_exp <- ifelse(is_binary_trt, 1, stats::var(Y))
   sigma2_out <- stats::var(Y)
+
+  #cat(paste0("sigma2_exp is ", sigma2_exp, "\n"))
+  #cat(paste0("sigma2_out is ", sigma2_out, "\n"))
+
   if (is_binary_trt) {
     lambda_exp <- 0 # arbitrary value
   } else {
@@ -100,6 +104,12 @@ bcf <- function(
     ) - sqrt(sigma2_out)
   }
   lambda_out <- rootSolve::uniroot.all(f, c(0.1^5, 10))
+
+  f <- function(lambda) {
+    invgamma::qinvgamma(
+      q, nu2 / 2, rate = lambda * nu2 / 2, lower.tail = TRUE, log.p = FALSE
+    ) - sqrt(sigma2_out)
+  }
   lambda_mod <- rootSolve::uniroot.all(f, c(0.1^5, 10))
 
 

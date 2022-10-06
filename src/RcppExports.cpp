@@ -20,7 +20,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-
 // fit_bcf_hetero
 void fit_bcf_hetero(NumericVector& Y1, NumericVector& Y0, NumericMatrix& var_count, NumericVector& var_prob, double& sigma2_exp, NumericVector& sigma2_out_hist, NumericVector& dir_alpha_hist, const NumericVector& Y, const NumericVector& trt, const NumericMatrix& X, const double trt_treated, const double trt_control, const int chain_idx, const int num_chain, const int total_iter, const int num_burn_in, const int num_thin, const int num_post_sample, const int num_tree, const NumericVector& step_prob, const double alpha, const double beta, const double nu, const double alpha2, const double beta2, const double nu2, const int num_tree_mod, const double lambda_exp, const double lambda_out, const double lambda_mod, const int boot_size, const bool is_binary_trt, const bool parallel, const bool verbose);
 RcppExport SEXP _bcfac_fit_bcf_hetero(SEXP Y1SEXP, SEXP Y0SEXP, SEXP var_countSEXP, SEXP var_probSEXP, SEXP sigma2_expSEXP, SEXP sigma2_out_histSEXP, SEXP dir_alpha_histSEXP, SEXP YSEXP, SEXP trtSEXP, SEXP XSEXP, SEXP trt_treatedSEXP, SEXP trt_controlSEXP, SEXP chain_idxSEXP, SEXP num_chainSEXP, SEXP total_iterSEXP, SEXP num_burn_inSEXP, SEXP num_thinSEXP, SEXP num_post_sampleSEXP, SEXP num_treeSEXP, SEXP step_probSEXP, SEXP alphaSEXP, SEXP betaSEXP, SEXP nuSEXP, SEXP alpha2SEXP, SEXP beta2SEXP, SEXP nu2SEXP, SEXP num_tree_modSEXP, SEXP lambda_expSEXP, SEXP lambda_outSEXP, SEXP lambda_modSEXP, SEXP boot_sizeSEXP, SEXP is_binary_trtSEXP, SEXP parallelSEXP, SEXP verboseSEXP) {
@@ -102,7 +101,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-
 // fit_sbart
 void fit_sbart(NumericVector& Y1, NumericVector& Y0, NumericMatrix& var_count, NumericVector& var_prob, NumericVector& sigma2_out1_hist, NumericVector& sigma2_out0_hist, NumericVector& dir_alpha_hist, const NumericVector& Y_treated, const NumericVector& Y_control, const NumericVector& trt, const NumericMatrix& X, const NumericMatrix& X_treated, const NumericMatrix& X_control, const int chain_idx, const int num_chain, const int total_iter, const int num_burn_in, const int num_thin, const int num_post_sample, const int num_tree, const NumericVector step_prob, const double alpha, const double beta, const double nu, const double lambda_out1, const double lambda_out0, const int boot_size, const bool is_binary_trt, const bool parallel, const bool verbose);
 RcppExport SEXP _bcfac_fit_sbart(SEXP Y1SEXP, SEXP Y0SEXP, SEXP var_countSEXP, SEXP var_probSEXP, SEXP sigma2_out1_histSEXP, SEXP sigma2_out0_histSEXP, SEXP dir_alpha_histSEXP, SEXP Y_treatedSEXP, SEXP Y_controlSEXP, SEXP trtSEXP, SEXP XSEXP, SEXP X_treatedSEXP, SEXP X_controlSEXP, SEXP chain_idxSEXP, SEXP num_chainSEXP, SEXP total_iterSEXP, SEXP num_burn_inSEXP, SEXP num_thinSEXP, SEXP num_post_sampleSEXP, SEXP num_treeSEXP, SEXP step_probSEXP, SEXP alphaSEXP, SEXP betaSEXP, SEXP nuSEXP, SEXP lambda_out1SEXP, SEXP lambda_out0SEXP, SEXP boot_sizeSEXP, SEXP is_binary_trtSEXP, SEXP parallelSEXP, SEXP verboseSEXP) {

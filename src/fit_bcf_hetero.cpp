@@ -50,12 +50,6 @@ void fit_bcf_hetero(
     const int NUM_VAR = X.ncol();
     const int TRT_IDX = X.ncol();
 
-    //const double alpha2 = 0.25;
-    //const double beta2  = 3;
-    //const double nu2    = 10;
-    //const int num_tree_mod = 25;
-
-
 
     NumericVector PS(NUM_OBS);
     NumericVector PS_vec(NUM_OBS);
@@ -121,7 +115,7 @@ void fit_bcf_hetero(
         pow(min(Y) / (-2*sqrt(num_tree)), 2),
         pow(max(Y) / ( 2*sqrt(num_tree)), 2)
     );
-    double sigma_mu_mod = 0.05;
+    double sigma_mu_mod = 0.005;
     
     // Initial values of R
     NumericVector residual_exp = clone(latent_variable);
@@ -145,6 +139,24 @@ void fit_bcf_hetero(
         1, trt, X, Xcut, step_prob, num_tree, // const variables 1
         alpha, beta, sigma_mu_exp, parallel   // const variables 2
     );
+
+    BartTree exposure_before = BartTree(
+        residual_exp, var_prob, sigma2_exp,   // mutable variables
+        1, trt, X, Xcut, step_prob, num_tree, // const variables 1
+        alpha, beta, sigma_mu_exp, parallel   // const variables 2
+    );
+    exposure_before.updateLatentVariable(latent_variable, is_binary_trt);
+        
+    // update tree
+    exposure_before.step(latent_variable, is_binary_trt, false);
+
+    PS_vec = exposure_before.getFittedValues();
+    for (int l = 0; l < NUM_OBS; l++) {
+        PS[l] = R::pnorm(PS_vec[l], 0 ,1, true, false);
+    }
+    X1 = cbind(X, PS);
+
+
     BartTree outcome  = BartTree(
         residual_out, var_prob, sigma2_out,   // mutable variables
         2, trt, X1, Xcut1, step_prob, num_tree, // const variables 1
@@ -154,8 +166,10 @@ void fit_bcf_hetero(
     BartTree modifier  = BartTree(
         residual_mod, var_prob, sigma2_out,   // mutable variables
         2, trt, X, Xcut, step_prob, num_tree_mod, // const variables 1
-        alpha2 , beta2, sigma_mu_out, parallel   // const variables 2
+        alpha2 , beta2, sigma_mu_mod, parallel   // const variables 2
     );
+
+    
     
     IntegerVector boot_idx = sample(NUM_OBS, boot_size, true) - 1;
     
@@ -178,14 +192,14 @@ void fit_bcf_hetero(
         // update tree
         exposure.step(latent_variable, is_binary_trt, false);
 
-        PS_vec = exposure.getFittedValues();
-        for (int l = 0; l < NUM_OBS; l++) {
-            PS[l] = R::pnorm(PS_vec[l], 0 ,1, true, false);
-        }
-        X1 = cbind(X, PS);
+        //PS_vec = exposure.getFittedValues();
+        //for (int l = 0; l < NUM_OBS; l++) {
+        //    PS[l] = R::pnorm(PS_vec[l], 0 ,1, true, false);
+        //}
+        //X1 = cbind(X, PS);
 
 
-         outcome.step(Y, is_binary_trt, true);
+        outcome.step(Y, is_binary_trt, true);
         //남택수정
         modifier.step(Y, is_binary_trt, false);
         
