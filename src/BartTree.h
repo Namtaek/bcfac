@@ -20,7 +20,7 @@ class BartTree
     // const variables
     const int                    model;     // 0 : sep,  1 : mar_exp, 2 : mar_out
     const NumericVector&         trt;
-    const NumericMatrix&         X;
+    NumericMatrix&               X;
     const vector<NumericVector>& Xcut;
     const NumericVector&         step_prob; // 0 : GROW, 1 : PRUNE,   2 : CHANGE
     const int                    num_tree;
@@ -43,7 +43,7 @@ public:
         double&                      sigma2,
         const int                    model,
         const NumericVector&         trt,
-        const NumericMatrix&         X,
+        NumericMatrix&               X,
         const vector<NumericVector>& Xcut,
         const NumericVector&         step_prob,
         const int                    num_tree,

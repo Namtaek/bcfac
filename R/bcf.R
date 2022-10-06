@@ -84,8 +84,6 @@ bcf <- function(
   sigma2_exp <- ifelse(is_binary_trt, 1, stats::var(Y))
   sigma2_out <- stats::var(Y)
 
-  #cat(paste0("sigma2_exp is ", sigma2_exp, "\n"))
-  #cat(paste0("sigma2_out is ", sigma2_out, "\n"))
 
   if (is_binary_trt) {
     lambda_exp <- 0 # arbitrary value

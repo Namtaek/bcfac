@@ -14,7 +14,7 @@ NULL
 #'
 #' Functions in `bcfac` serve one of three purposes.
 #' \enumerate{
-#'   \item Functions for fitting: `sbart()` and `mbart()` and `bcf()`.
+#'   \item Functions for fitting: `sbart()`, `mbart()` and `bcf()`.
 #'   \item Functions for summary: `summary()`, `plot()` and `gelman_rubin()`.
 #'   \item Utility function for OpenMP: `count_omp_thread()`.
 #' }

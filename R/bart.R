@@ -199,7 +199,6 @@
 #'   num_chain       = 2,
 #'   num_post_sample = 20,
 #'   num_burn_in     = 10,
-#'   num_tree_mod    = 5
 #'   verbose         = FALSE
 #' )
 NULL

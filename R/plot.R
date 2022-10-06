@@ -14,7 +14,7 @@
 #' @details
 #' ## PIP plot
 #' When a posterior sample is sampled during training,
-#' `sbart()` or `mbart()` also counts
+#' `sbart()` or `mbart()` or '`bcf()` also counts
 #' which variables are included in the model and
 #' compute pip for each variable.
 #' For `bcfac` object `x`,

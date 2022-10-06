@@ -44,6 +44,10 @@ void fit_mbart(
     const int NUM_OBS = X.nrow();
     const int NUM_VAR = X.ncol();
     const int TRT_IDX = X.ncol();
+
+    NumericVector PS_vec(NUM_OBS);
+    NumericVector PS(NUM_OBS);
+    NumericMatrix X1(NUM_OBS, NUM_VAR + 1);
     
     // unique value of potential confounders
     vector<NumericVector> Xcut (NUM_VAR + 1);
@@ -63,6 +67,23 @@ void fit_mbart(
             temp.sort();
             Xcut[j] = clone(temp);
         }
+    }
+
+    NumericMatrix temp_seq(NUM_OBS, 1);
+    temp_seq(_, 0) = seq_len(NUM_OBS);
+    for (int i = 0; i < NUM_OBS; i++) {
+        float j = i;
+        temp_seq(i, 0) = j / (NUM_OBS + 1);
+    }
+
+    X1 = cbind(X, temp_seq);
+    vector<NumericVector> Xcut1 (NUM_VAR + 1);
+    for (int j = 0; j < NUM_VAR + 1; j++)
+    {
+        NumericVector temp;
+        temp = unique(X1(_, j));
+        temp.sort();            
+        Xcut1[j] = clone(temp);
     }
 
 
@@ -129,10 +150,16 @@ void fit_mbart(
         
         // update latent_variable
         exposure.updateLatentVariable(latent_variable, is_binary_trt);
+        PS_vec = exposure.getFittedValues();
+        for (int l = 0; l < NUM_OBS; l++) {
+            PS[l] = R::pnorm(PS_vec[l], 0 ,1, true, false);
+        }
+        //std::cout << "PS value is " << PS << "\n";
+
         
         // update tree
         exposure.step(latent_variable, is_binary_trt, false);
-         outcome.step(Y,               is_binary_trt, false);
+        outcome.step(Y,               is_binary_trt, false);
         
         // update sigma
         if (!is_binary_trt)

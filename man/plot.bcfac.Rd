@@ -28,7 +28,7 @@ posterior inclusion probability (pip) plot and trace plot.
 \subsection{PIP plot}{
 
 When a posterior sample is sampled during training,
-\code{sbart()} or \code{mbart()} also counts
+\code{sbart()} or \code{mbart()} or '\code{bcf()} also counts
 which variables are included in the model and
 compute pip for each variable.
 For \code{bcfac} object \code{x},

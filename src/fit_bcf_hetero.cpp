@@ -50,12 +50,10 @@ void fit_bcf_hetero(
     const int NUM_VAR = X.ncol();
     const int TRT_IDX = X.ncol();
 
-
     NumericVector PS(NUM_OBS);
     NumericVector PS_vec(NUM_OBS);
     NumericMatrix X1(NUM_OBS, NUM_VAR + 1);
 
-    //play
     
     // unique value of potential confounders
     vector<NumericVector> Xcut (NUM_VAR + 1);
@@ -77,6 +75,7 @@ void fit_bcf_hetero(
         }
     }
 
+
     NumericMatrix temp_seq(NUM_OBS, 1);
     temp_seq(_, 0) = seq_len(NUM_OBS);
     for (int i = 0; i < NUM_OBS; i++) {
@@ -97,10 +96,12 @@ void fit_bcf_hetero(
 
     
     NumericVector latent_variable;
+    NumericVector latent_variable_before;
     {
-        const double MEAN = R::qnorm(mean(trt), 0, 1, true, false);
-        const double SD   = 1.0;
-        latent_variable   = Rcpp::rnorm(NUM_OBS, MEAN, SD);
+        const double MEAN        = R::qnorm(mean(trt), 0, 1, true, false);
+        const double SD          = 1.0;
+        latent_variable          = Rcpp::rnorm(NUM_OBS, MEAN, SD);
+        latent_variable_before   = Rcpp::rnorm(NUM_OBS, MEAN, SD);
     }
     
     double sigma2_out = sigma2_out_hist(0);
@@ -116,15 +117,16 @@ void fit_bcf_hetero(
         pow(max(Y) / ( 2*sqrt(num_tree)), 2)
     );
     double sigma_mu_mod = 0.005;
-    
+
+
     // Initial values of R
     NumericVector residual_exp = clone(latent_variable);
     NumericVector residual_out = clone(Y);
-    NumericVector residual_mod(NUM_OBS);
-    
+    NumericVector residual_mod = clone(Y);
+    NumericVector residual_exp_before = clone(latent_variable);
+
     // Initial values for the selection probabilities
     NumericVector post_dir_alpha = rep(1.0, NUM_VAR + 1);
-    // 남택 수정
     NumericVector mod_dir_alpha = rep(1.0, NUM_VAR);
     
     // Obtaining namespace of MCMCpack package
@@ -140,15 +142,14 @@ void fit_bcf_hetero(
         alpha, beta, sigma_mu_exp, parallel   // const variables 2
     );
 
+
     BartTree exposure_before = BartTree(
-        residual_exp, var_prob, sigma2_exp,   // mutable variables
+        residual_exp_before, var_prob, sigma2_exp,   // mutable variables
         1, trt, X, Xcut, step_prob, num_tree, // const variables 1
         alpha, beta, sigma_mu_exp, parallel   // const variables 2
     );
-    exposure_before.updateLatentVariable(latent_variable, is_binary_trt);
-        
-    // update tree
-    exposure_before.step(latent_variable, is_binary_trt, false);
+    exposure_before.updateLatentVariable(latent_variable_before, is_binary_trt);
+    exposure_before.step(latent_variable_before, is_binary_trt, false);
 
     PS_vec = exposure_before.getFittedValues();
     for (int l = 0; l < NUM_OBS; l++) {
@@ -156,19 +157,11 @@ void fit_bcf_hetero(
     }
     X1 = cbind(X, PS);
 
-
     BartTree outcome  = BartTree(
         residual_out, var_prob, sigma2_out,   // mutable variables
-        2, trt, X1, Xcut1, step_prob, num_tree, // const variables 1
+        1, trt, X1, Xcut1, step_prob, num_tree, // const variables 1
         alpha, beta, sigma_mu_out, parallel   // const variables 2
     );
-    // 남택수정
-    BartTree modifier  = BartTree(
-        residual_mod, var_prob, sigma2_out,   // mutable variables
-        2, trt, X, Xcut, step_prob, num_tree_mod, // const variables 1
-        alpha2 , beta2, sigma_mu_mod, parallel   // const variables 2
-    );
-
     
     
     IntegerVector boot_idx = sample(NUM_OBS, boot_size, true) - 1;
@@ -192,17 +185,8 @@ void fit_bcf_hetero(
         // update tree
         exposure.step(latent_variable, is_binary_trt, false);
 
-        //PS_vec = exposure.getFittedValues();
-        //for (int l = 0; l < NUM_OBS; l++) {
-        //    PS[l] = R::pnorm(PS_vec[l], 0 ,1, true, false);
-        //}
-        //X1 = cbind(X, PS);
-
-
         outcome.step(Y, is_binary_trt, true);
-        //남택수정
-        modifier.step(Y, is_binary_trt, false);
-        
+
         // update sigma
         if (!is_binary_trt)
             exposure.updateSigma2(rinvgamma, Y, nu, lambda_exp);
@@ -212,7 +196,6 @@ void fit_bcf_hetero(
         // count included
         NumericVector var_count_exp = exposure.countSelectedVariables();
         NumericVector var_count_out =  outcome.countSelectedVariables();
-        NumericVector var_count_mod = modifier.countSelectedVariables();
         
         // MH to update dir_alpha
         exposure.updateDirAlpha(dir_alpha);
