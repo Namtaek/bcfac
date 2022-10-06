@@ -69,8 +69,8 @@ bcf <- function(
     parallel <- ifelse(n < 15e4, TRUE, FALSE)
 
   # assign variable names if there are no name
-  if (is.null(colnames(X)))
-    colnames(X) <- paste0("X", seq_len(p))
+  #if (is.null(colnames(X)))
+  #  colnames(X) <- paste0("X", seq_len(p))
 
 
   # ---- bcf specific preprocessing step ----

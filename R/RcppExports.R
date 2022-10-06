@@ -18,6 +18,10 @@ count_omp_thread <- function() {
     .Call(`_bcfac_count_omp_thread`)
 }
 
+fit_bcf_hetero <- function(Y1, Y0, var_count, var_prob, sigma2_exp, sigma2_out_hist, dir_alpha_hist, Y, trt, X, trt_treated, trt_control, chain_idx, num_chain, total_iter, num_burn_in, num_thin, num_post_sample, num_tree, step_prob, alpha, beta, nu, alpha2, beta2, nu2, num_tree_mod, lambda_exp, lambda_out, lambda_mod, boot_size, is_binary_trt, parallel, verbose) {
+    invisible(.Call(`_bcfac_fit_bcf_hetero`, Y1, Y0, var_count, var_prob, sigma2_exp, sigma2_out_hist, dir_alpha_hist, Y, trt, X, trt_treated, trt_control, chain_idx, num_chain, total_iter, num_burn_in, num_thin, num_post_sample, num_tree, step_prob, alpha, beta, nu, alpha2, beta2, nu2, num_tree_mod, lambda_exp, lambda_out, lambda_mod, boot_size, is_binary_trt, parallel, verbose))
+}
+
 fit_mbart <- function(Y1, Y0, var_count, var_prob, sigma2_exp, sigma2_out_hist, dir_alpha_hist, Y, trt, X, trt_treated, trt_control, chain_idx, num_chain, total_iter, num_burn_in, num_thin, num_post_sample, num_tree, step_prob, alpha, beta, nu, lambda_exp, lambda_out, boot_size, is_binary_trt, parallel, verbose) {
     invisible(.Call(`_bcfac_fit_mbart`, Y1, Y0, var_count, var_prob, sigma2_exp, sigma2_out_hist, dir_alpha_hist, Y, trt, X, trt_treated, trt_control, chain_idx, num_chain, total_iter, num_burn_in, num_thin, num_post_sample, num_tree, step_prob, alpha, beta, nu, lambda_exp, lambda_out, boot_size, is_binary_trt, parallel, verbose))
 }
@@ -26,6 +30,3 @@ fit_sbart <- function(Y1, Y0, var_count, var_prob, sigma2_out1_hist, sigma2_out0
     invisible(.Call(`_bcfac_fit_sbart`, Y1, Y0, var_count, var_prob, sigma2_out1_hist, sigma2_out0_hist, dir_alpha_hist, Y_treated, Y_control, trt, X, X_treated, X_control, chain_idx, num_chain, total_iter, num_burn_in, num_thin, num_post_sample, num_tree, step_prob, alpha, beta, nu, lambda_out1, lambda_out0, boot_size, is_binary_trt, parallel, verbose))
 }
 
-fit_bcf_hetero <- function(Y1, Y0, var_count, var_prob, sigma2_out1_hist, sigma2_out0_hist, dir_alpha_hist, Y_treated, Y_control, trt, X, X_treated, X_control, chain_idx, num_chain, total_iter, num_burn_in, num_thin, num_post_sample, num_tree, step_prob, alpha, beta, nu, alpha2, beta2, nu2, num_tree_mod, lambda_out1, lambda_out0, boot_size, is_binary_trt, parallel, verbose) {
-  invisible(.Call(`_bcfac_fit_bcf_hetero`, Y1, Y0, var_count, var_prob, sigma2_out1_hist, sigma2_out0_hist, dir_alpha_hist, Y_treated, Y_control, trt, X, X_treated, X_control, chain_idx, num_chain, total_iter, num_burn_in, num_thin, num_post_sample, num_tree, step_prob, alpha, beta, nu, alpha2, beta2, nu2, num_tree_mod, lambda_out1, lambda_out0, boot_size, is_binary_trt, parallel, verbose))
-}
