@@ -142,8 +142,8 @@ void fit_bcf_hetero(
         alpha, beta, sigma_mu_exp, parallel   // const variables 2
     );
 
-
-    BartTree exposure_before = BartTree(
+    /*
+    BartTree exposure_before = BartTree(   
         residual_exp_before, var_prob, sigma2_exp,   // mutable variables
         1, trt, X, Xcut, step_prob, num_tree, // const variables 1
         alpha, beta, sigma_mu_exp, parallel   // const variables 2
@@ -155,11 +155,13 @@ void fit_bcf_hetero(
     for (int l = 0; l < NUM_OBS; l++) {
         PS[l] = R::pnorm(PS_vec[l], 0 ,1, true, false);
     }
-    X1 = cbind(X, PS);
+    */
+    //X1 = cbind(X, PS);
 
+    
     BartTree outcome  = BartTree(
         residual_out, var_prob, sigma2_out,   // mutable variables
-        1, trt, X1, Xcut1, step_prob, num_tree, // const variables 1
+        2, trt, X, Xcut, step_prob, num_tree, // const variables 1
         alpha, beta, sigma_mu_out, parallel   // const variables 2
     );
     
