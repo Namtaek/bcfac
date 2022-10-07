@@ -161,7 +161,7 @@ void fit_bcf_hetero(
     
     BartTree outcome  = BartTree(
         residual_out, var_prob, sigma2_out,   // mutable variables
-        2, trt, X, Xcut, step_prob, num_tree, // const variables 1
+        1, trt, X, Xcut, step_prob, num_tree, // const variables 1
         alpha, beta, sigma_mu_out, parallel   // const variables 2
     );
     

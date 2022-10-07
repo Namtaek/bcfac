@@ -13,3 +13,4 @@ install the development version from
 remotes::install_github("Namtaek/bcfac")
 ```
 
+https://invented-action-64a.notion.site/15-BCF-Confounding-Adjustment-C-9afe9d671e8d4a2492fba10b967dfdab
