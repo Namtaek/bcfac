@@ -50,9 +50,9 @@ void fit_bcf_hetero(
     const int NUM_VAR = X.ncol();
     const int TRT_IDX = X.ncol();
 
-    NumericVector PS(NUM_OBS);
-    NumericVector PS_vec(NUM_OBS);
-    NumericMatrix X1(NUM_OBS, NUM_VAR + 1);
+    //NumericVector PS(NUM_OBS);
+    //NumericVector PS_vec(NUM_OBS);
+    //NumericMatrix X1(NUM_OBS, NUM_VAR + 1);
 
     
     // unique value of potential confounders
@@ -83,8 +83,9 @@ void fit_bcf_hetero(
         temp_seq(i, 0) = j / (NUM_OBS + 1);
     }
 
-    X1 = cbind(X, temp_seq);
-    vector<NumericVector> Xcut1 (NUM_VAR + 1);
+    //X1 = cbind(X, temp_seq);
+    //vector<NumericVector> Xcut1 (NUM_VAR + 1);
+    /*
     for (int j = 0; j < NUM_VAR + 1; j++)
     {
         NumericVector temp;
@@ -92,6 +93,7 @@ void fit_bcf_hetero(
         temp.sort();            
         Xcut1[j] = clone(temp);
     }
+    */
 
 
     
@@ -105,6 +107,7 @@ void fit_bcf_hetero(
     }
     
     double sigma2_out = sigma2_out_hist(0);
+    double sigma2_mod = sigma2_out_hist(0);
     double dir_alpha  = dir_alpha_hist(0);
     
     // sigma_mu based on min/max of Y, Y (Tr=1) and Y (Tr=0)    
@@ -116,17 +119,18 @@ void fit_bcf_hetero(
         pow(min(Y) / (-2*sqrt(num_tree)), 2),
         pow(max(Y) / ( 2*sqrt(num_tree)), 2)
     );
-    double sigma_mu_mod = 0.005;
+    double sigma_mu_mod = sigma_mu_out;
 
 
     // Initial values of R
     NumericVector residual_exp = clone(latent_variable);
     NumericVector residual_out = clone(Y);
-    NumericVector residual_mod = clone(Y);
+    NumericVector residual_mod = clone(residual_out);
     NumericVector residual_exp_before = clone(latent_variable);
 
     // Initial values for the selection probabilities
-    NumericVector post_dir_alpha = rep(1.0, NUM_VAR + 1);
+    //NumericVector post_dir_alpha = rep(1.0, NUM_VAR + 1); 
+    NumericVector post_dir_alpha = rep(1.0, NUM_VAR);
     NumericVector mod_dir_alpha = rep(1.0, NUM_VAR);
     
     // Obtaining namespace of MCMCpack package
@@ -164,6 +168,12 @@ void fit_bcf_hetero(
         1, trt, X, Xcut, step_prob, num_tree, // const variables 1
         alpha, beta, sigma_mu_out, parallel   // const variables 2
     );
+
+    BartTree modifier = BartTree(
+        residual_mod, var_prob, sigma2_mod,   // mutable variables
+        1, trt, X, Xcut, step_prob, num_tree, // const variables 1
+        alpha2, beta2, sigma_mu_out, parallel   // const variables 2
+    );
     
     
     IntegerVector boot_idx = sample(NUM_OBS, boot_size, true) - 1;
@@ -193,6 +203,7 @@ void fit_bcf_hetero(
         if (!is_binary_trt)
             exposure.updateSigma2(rinvgamma, Y, nu, lambda_exp);
         outcome.updateSigma2(rinvgamma,  Y, nu, lambda_out);
+        modifier.updateSigma2(rinvgamma,  residual_out, nu2, lambda_mod);
         sigma2_out_hist(iter) = outcome.getSigma2();
 
         // count included
@@ -204,12 +215,15 @@ void fit_bcf_hetero(
         dir_alpha_hist(iter) = dir_alpha;
         
         // then update post_dir_alpha
-        post_dir_alpha = rep(dir_alpha / (NUM_VAR + 1), NUM_VAR + 1);
+        //post_dir_alpha = rep(dir_alpha / (NUM_VAR + 1), NUM_VAR + 1);
+        post_dir_alpha = rep(dir_alpha, NUM_VAR);
         
         // MH algorithm to update inclusion probabilities
         exposure.updateVarProb(
             rdirichlet, post_dir_alpha, var_count_exp, var_count_out
         );
+
+        modifier.step(residual_out, is_binary_trt, true);
         
         // sample E[Y(1) - Y(0)]
         if (iter > num_burn_in) 
@@ -220,7 +234,7 @@ void fit_bcf_hetero(
                 var_count(res_idx, _) = var_count_out;
                 
                 // predict effect and potential outcomes
-                Y1(res_idx) = outcome.predict(boot_idx, trt_treated);
+                Y1(res_idx) = outcome.predict(boot_idx, trt_treated) + modifier.predict(boot_idx, trt_treated);
                 Y0(res_idx) = outcome.predict(boot_idx, trt_control);
                 if (res_idx == num_post_sample)
                     break;

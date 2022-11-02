@@ -191,14 +191,4 @@
 #'   num_burn_in     = 10,
 #'   verbose         = FALSE
 #' )
-#' bcf(
-#'   Y               = ihdp$y_factual,
-#'   trt             = ihdp$treatment,
-#'   X               = ihdp[, 6:30],
-#'   num_tree        = 10,
-#'   num_chain       = 2,
-#'   num_post_sample = 20,
-#'   num_burn_in     = 10,
-#'   verbose         = FALSE
-#' )
 NULL
