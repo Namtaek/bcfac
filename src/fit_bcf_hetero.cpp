@@ -186,7 +186,7 @@ void fit_bcf_hetero(
     BartTree modifier = BartTree(
         residual_mod, var_prob, sigma2_mod,   // mutable variables
         0, trt, X, Xcut, step_prob, num_tree, // const variables 1
-        alpha2, beta2, sigma_mu_out/10, parallel   // const variables 2
+        alpha2, beta2, sigma_mu_mod/10, parallel   // const variables 2
     );
     
     
@@ -208,14 +208,14 @@ void fit_bcf_hetero(
         
         // update latent_variable
         exposure.updateLatentVariable(latent_variable, is_binary_trt);
-        std::cout << "\n" << "Latent Variable updated " << "\n";
+        //std::cout << "\n" << "Latent Variable updated " << "\n";
         
         // update tree
         exposure.step(latent_variable, is_binary_trt, false);
-        std::cout << "exposure Variable updated " << "\n";
+        //std::cout << "exposure Variable updated " << "\n";
 
         outcome.step(Y, is_binary_trt, true);
-        std::cout << "outcome updated " << "\n";
+        //std::cout << "outcome updated " << "\n";
 
         // update sigma
         if (!is_binary_trt)
@@ -223,7 +223,7 @@ void fit_bcf_hetero(
         outcome.updateSigma2(rinvgamma,  Y, nu, lambda_out);
         modifier.updateSigma2(rinvgamma,  residual_out, nu2, lambda_mod);
         sigma2_out_hist(iter) = outcome.getSigma2();
-        std::cout << "sigma2 updated " << "\n";
+        //std::cout << "sigma2 updated " << "\n";
 
         // count included
         NumericVector var_count_exp = exposure.countSelectedVariables();
@@ -231,7 +231,7 @@ void fit_bcf_hetero(
         
         // MH to update dir_alpha
         exposure.updateDirAlpha(dir_alpha);
-        std::cout << "dirichlet alpha updated " << "\n";
+        //std::cout << "dirichlet alpha updated " << "\n";
         dir_alpha_hist(iter) = dir_alpha;
         
         // then update post_dir_alpha
@@ -247,7 +247,7 @@ void fit_bcf_hetero(
         */
         var_prob = rdirichlet(1, post_dir_alpha);
 
-        modifier.step(residual_out, is_binary_trt, true);
+        modifier.step(residual_out, is_binary_trt, false);
         
         // sample E[Y(1) - Y(0)]
         if (iter > num_burn_in) 
