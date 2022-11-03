@@ -130,8 +130,8 @@ bcf <- function(
     Y0  <- vector(mode = "numeric", length = num_post_sample)
 
     # placeholder for inclusion probabilities and initialize var_prob
-    var_count <- matrix(0, nrow = num_post_sample, ncol = p + 1)
-    var_prob  <- MCMCpack::rdirichlet(1, rep(dir_alpha, p + 1))
+    var_count <- matrix(0, nrow = num_post_sample, ncol = p)
+    var_prob  <- MCMCpack::rdirichlet(1, rep(dir_alpha, p))
 
     # placeholder for parameters
     sigma2_out_hist    <- vector(mode = "numeric", length = num_chain_iter + 1)
@@ -175,7 +175,7 @@ bcf <- function(
 
   # merge result
   ATE <- Y1 <- Y0 <- NULL
-  var_prob <- vector(mode = "numeric", length = p + 1)
+  var_prob <- vector(mode = "numeric", length = p)
   for (chain_idx in seq_len(num_chain)) {
     ATE <- c(ATE, chains[[chain_idx]]$ATE)
     Y1  <- c(Y1,  chains[[chain_idx]]$Y1)
@@ -183,7 +183,7 @@ bcf <- function(
     var_prob <- var_prob + chains[[chain_idx]]$var_prob
   }
   var_prob        <- var_prob / num_chain
-  names(var_prob) <- c(colnames(X), "trt")
+  names(var_prob) <- c(colnames(X))
 
   cat("\n")
 
@@ -194,7 +194,7 @@ bcf <- function(
       var_prob = var_prob,
       chains   = chains,
       model    = "bcf",
-      label    = c(colnames(X), "trt"),
+      label    = c(colnames(X)),
       params   = list(
         trt_treated     = trt_treated,
         trt_control     = trt_control,

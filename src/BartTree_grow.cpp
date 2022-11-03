@@ -37,7 +37,7 @@ void BartTree::grow(const int t)
                 // In marginal exposure model, we do not use TRT.
                 do
                 {
-                    prop_var_idx = sample(NUM_VAR + 1, 1, false, var_prob_)(0) - 1;
+                    prop_var_idx = sample(NUM_VAR, 1, false, var_prob_)(0) - 1; // 남택 수정
                 } 
                 while (prop_var_idx == TRT_IDX);
                 break;

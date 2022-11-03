@@ -56,7 +56,15 @@ void fit_bcf_hetero(
 
     
     // unique value of potential confounders
-    vector<NumericVector> Xcut (NUM_VAR + 1);
+    vector<NumericVector> Xcut (NUM_VAR);
+    for (int j = 0; j < NUM_VAR; j++)
+    {
+        NumericVector temp;
+        temp = unique(X(_, j));
+        temp.sort();
+        Xcut[j] = clone(temp);
+    }
+    /*
     for (int j = 0; j < NUM_VAR + 1; j++)
     {
         NumericVector temp;
@@ -74,14 +82,16 @@ void fit_bcf_hetero(
             Xcut[j] = clone(temp);
         }
     }
+    */
 
-
+    /*
     NumericMatrix temp_seq(NUM_OBS, 1);
     temp_seq(_, 0) = seq_len(NUM_OBS);
     for (int i = 0; i < NUM_OBS; i++) {
         float j = i;
         temp_seq(i, 0) = j / (NUM_OBS + 1);
     }
+    */
 
     //X1 = cbind(X, temp_seq);
     //vector<NumericVector> Xcut1 (NUM_VAR + 1);
@@ -98,12 +108,12 @@ void fit_bcf_hetero(
 
     
     NumericVector latent_variable;
-    NumericVector latent_variable_before;
+    //NumericVector latent_variable_before;
     {
         const double MEAN        = R::qnorm(mean(trt), 0, 1, true, false);
         const double SD          = 1.0;
         latent_variable          = Rcpp::rnorm(NUM_OBS, MEAN, SD);
-        latent_variable_before   = Rcpp::rnorm(NUM_OBS, MEAN, SD);
+        //latent_variable_before   = Rcpp::rnorm(NUM_OBS, MEAN, SD);
     }
     
     double sigma2_out = sigma2_out_hist(0);
@@ -119,14 +129,17 @@ void fit_bcf_hetero(
         pow(min(Y) / (-2*sqrt(num_tree)), 2),
         pow(max(Y) / ( 2*sqrt(num_tree)), 2)
     );
-    double sigma_mu_mod = sigma_mu_out;
+    double sigma_mu_mod = max(
+        pow(min(Y) / (-2*sqrt(num_tree)), 2),
+        pow(max(Y) / ( 2*sqrt(num_tree)), 2)
+    );
 
 
     // Initial values of R
     NumericVector residual_exp = clone(latent_variable);
     NumericVector residual_out = clone(Y);
     NumericVector residual_mod = clone(residual_out);
-    NumericVector residual_exp_before = clone(latent_variable);
+    //NumericVector residual_exp_before = clone(latent_variable);
 
     // Initial values for the selection probabilities
     //NumericVector post_dir_alpha = rep(1.0, NUM_VAR + 1); 
@@ -165,15 +178,17 @@ void fit_bcf_hetero(
     
     BartTree outcome  = BartTree(
         residual_out, var_prob, sigma2_out,   // mutable variables
-        1, trt, X, Xcut, step_prob, num_tree, // const variables 1
+        0, trt, X, Xcut, step_prob, num_tree, // const variables 1
         alpha, beta, sigma_mu_out, parallel   // const variables 2
     );
 
+    
     BartTree modifier = BartTree(
         residual_mod, var_prob, sigma2_mod,   // mutable variables
-        1, trt, X, Xcut, step_prob, num_tree, // const variables 1
-        alpha2, beta2, sigma_mu_out, parallel   // const variables 2
+        0, trt, X, Xcut, step_prob, num_tree, // const variables 1
+        alpha2, beta2, sigma_mu_out/10, parallel   // const variables 2
     );
+    
     
     
     IntegerVector boot_idx = sample(NUM_OBS, boot_size, true) - 1;
@@ -181,7 +196,7 @@ void fit_bcf_hetero(
     int thin_count = 0, res_idx = 0;
 
     // init ProgressBar
-    ProgressBar progress_bar = ProgressBar(chain_idx, num_chain, total_iter, 40);
+    ProgressBar progress_bar = ProgressBar(chain_idx, num_chain, total_iter, 40); 
     
     // run MCMC
     for (int iter = 1; iter < total_iter + 1; iter++)
@@ -193,11 +208,14 @@ void fit_bcf_hetero(
         
         // update latent_variable
         exposure.updateLatentVariable(latent_variable, is_binary_trt);
+        std::cout << "\n" << "Latent Variable updated " << "\n";
         
         // update tree
         exposure.step(latent_variable, is_binary_trt, false);
+        std::cout << "exposure Variable updated " << "\n";
 
         outcome.step(Y, is_binary_trt, true);
+        std::cout << "outcome updated " << "\n";
 
         // update sigma
         if (!is_binary_trt)
@@ -205,6 +223,7 @@ void fit_bcf_hetero(
         outcome.updateSigma2(rinvgamma,  Y, nu, lambda_out);
         modifier.updateSigma2(rinvgamma,  residual_out, nu2, lambda_mod);
         sigma2_out_hist(iter) = outcome.getSigma2();
+        std::cout << "sigma2 updated " << "\n";
 
         // count included
         NumericVector var_count_exp = exposure.countSelectedVariables();
@@ -212,16 +231,21 @@ void fit_bcf_hetero(
         
         // MH to update dir_alpha
         exposure.updateDirAlpha(dir_alpha);
+        std::cout << "dirichlet alpha updated " << "\n";
         dir_alpha_hist(iter) = dir_alpha;
         
         // then update post_dir_alpha
         //post_dir_alpha = rep(dir_alpha / (NUM_VAR + 1), NUM_VAR + 1);
-        post_dir_alpha = rep(dir_alpha, NUM_VAR);
-        
+        //post_dir_alpha = rep(dir_alpha, NUM_VAR);
+        post_dir_alpha = rep(dir_alpha / NUM_VAR, NUM_VAR) + var_count_exp + var_count_out;
+
         // MH algorithm to update inclusion probabilities
+        /*
         exposure.updateVarProb(
             rdirichlet, post_dir_alpha, var_count_exp, var_count_out
         );
+        */
+        var_prob = rdirichlet(1, post_dir_alpha);
 
         modifier.step(residual_out, is_binary_trt, true);
         
