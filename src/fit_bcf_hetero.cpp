@@ -121,11 +121,11 @@ void fit_bcf_hetero(
     double dir_alpha  = dir_alpha_hist(0);
     
     // sigma_mu based on min/max of Y, Y (Tr=1) and Y (Tr=0)    
-    const double sigma_mu_exp = max(
+    double sigma_mu_exp = max(
         pow(min(latent_variable) / (-2*sqrt(num_tree)), 2),
         pow(max(latent_variable) / ( 2*sqrt(num_tree)), 2)
     );
-    const double sigma_mu_out = max(
+    double sigma_mu_out = max(
         pow(min(Y) / (-2*sqrt(num_tree)), 2),
         pow(max(Y) / ( 2*sqrt(num_tree)), 2)
     );

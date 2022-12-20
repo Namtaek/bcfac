@@ -27,7 +27,7 @@ class BartTree
     const int                    num_tree;
     const double                 alpha;
     const double                 beta;
-    const double                 sigma_mu;
+    double                       sigma_mu;
     const bool                   parallel;
 
 public:
@@ -50,7 +50,7 @@ public:
         const int                    num_tree,
         const double                 alpha,
         const double                 beta,
-        const double                 sigma_mu,
+        double                       sigma_mu,
         const bool                   parallel
     ) :
         residual_(residual),
