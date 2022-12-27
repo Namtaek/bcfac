@@ -211,10 +211,10 @@ void fit_bcf_hetero(
         //std::cout << "\n" << "Latent Variable updated " << "\n";
         
         // update tree
-        exposure.step(latent_variable, is_binary_trt, false);
+        exposure.step(latent_variable, is_binary_trt, false, false);
         //std::cout << "exposure Variable updated " << "\n";
 
-        outcome.step(Y, is_binary_trt, true);
+        outcome.step(Y, is_binary_trt, true, false);
         //std::cout << "outcome updated " << "\n";
 
         // update sigma
@@ -247,7 +247,7 @@ void fit_bcf_hetero(
         */
         var_prob = rdirichlet(1, post_dir_alpha);
 
-        modifier.step(residual_out, is_binary_trt, false);
+        modifier.step(residual_out, is_binary_trt, false, true);
         
         // sample E[Y(1) - Y(0)]
         if (iter > num_burn_in) 

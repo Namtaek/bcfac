@@ -35,6 +35,25 @@ void BartTree::updateResidual(const NumericVector& latent_variable, const int t)
     }
 }
 
+void BartTree::updateResidual(const NumericVector& latent_variable, const int t, const bool modifier)
+{
+    NumericVector fitted_values = rowSums(leaf_values_);
+    if (modifier == true) {
+        for (int i = 0; i < fitted_values.length(); i++)
+        {   
+        residual_(i) = latent_variable(i) - (fitted_values(i) - leaf_values_(i, t)) * trt(i);
+        }
+    }
+    else
+    {
+        for (int i = 0; i < fitted_values.length(); i++)
+        {
+        residual_(i) = latent_variable(i) - (fitted_values(i) - leaf_values_(i, t));
+        }
+    }
+
+}
+
 void BartTree::updateSigma2(
     const Function&      rinvgamma,
     const NumericVector& Y,

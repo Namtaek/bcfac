@@ -109,6 +109,7 @@ public:
 
     // step related methods
     void step(const NumericVector& latent_variable, const bool is_binary_trt, const bool half_cauchy);
+    void step(const NumericVector& latent_variable, const bool is_binary_trt, const bool half_cauchy, const bool modifier);
     void grow(const int t);
     void prune(const int t);
     void change(const int t);
@@ -129,6 +130,7 @@ public:
     );
     void updateLatentVariable(NumericVector& latent_variable, const bool is_binary_trt);
     void updateResidual(const NumericVector& latent_variable, const int t);
+    void updateResidual(const NumericVector& latent_variable, const int t, const bool modifier);
     void updateSigma2(
         const Function&      rinvgamma,
         const NumericVector& Y,
